@@ -1,37 +1,51 @@
-package com.team.todolist.controller;
+package com.team.todolist.model;
 
-import java.util.List;
-import com.team.todolist.model.TodoItem;
-import com.team.todolist.service.TodoService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
+@Entity
+public class TodoItem {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-@RestController
-@RequestMapping("/api/todos")
-@CrossOrigin(origins = "http://localhost:3001")
-public class TodoController {
+    private String todoItemContent;
+    private boolean finished;
 
-    @Autowired
-    private TodoService todoService;
+    // 기본 생성자
+    public TodoItem() {}
 
-    @GetMapping
-    public List<TodoItem> getAllTodoItems() {
-        return todoService.getAllTodoItems();
+    // 모든 필드를 포함한 생성자
+    public TodoItem(Long id, String todoItemContent, boolean finished) {
+        this.id = id;
+        this.todoItemContent = todoItemContent;
+        this.finished = finished;
     }
 
-    @PostMapping
-    public TodoItem createTodoItem(@RequestBody TodoItem todoItem) {
-        return todoService.saveTodoItem(todoItem);
+    // Getter와 Setter 메서드들
+    public Long getId() {
+        return id;
     }
 
-    @PutMapping("/{id}")
-    public TodoItem updateTodoItem(@PathVariable Long id, @RequestBody TodoItem todoItem) {
-        return todoService.updateTodoItem(id, todoItem);
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteTodoItem(@PathVariable Long id) {
-        todoService.deleteTodoItem(id);
+    public String getTodoItemContent() {
+        return todoItemContent;
+    }
+
+    public void setTodoItemContent(String todoItemContent) {
+        this.todoItemContent = todoItemContent;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
     }
 }
